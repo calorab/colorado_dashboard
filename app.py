@@ -21,11 +21,6 @@ app.layout = html.Div([html.H1('Multi-page app with Dash Pages'),
 ])
 
 
-
-def update_interactive_graph():
-    pass
-
-
 if __name__ == '__main__':
     app.run(debug=True)
 # app.run_server(dev_tools_hot_reload=False) to remove hot-reloading
