@@ -9,6 +9,12 @@ from dash_bootstrap_templates import load_figure_template
 dash.register_page(__name__)
 
 
+def get_poi_data(county):
+
+    with open('../data') as f:
+        pass
+
+
 layout = html.Div([
     html.H1('Points of Interest'),
     html.Div([

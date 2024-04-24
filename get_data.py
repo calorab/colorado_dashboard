@@ -17,7 +17,7 @@ conn = snowflake.connector.connect(
 # Create a the snowflake cursor object
 cur = conn.cursor()
 # 
-tables = ('DEMOGRAPHICS', 'HOUSING', 'PARKS_ADDRESS_API_DATA', 'PARKS_API_DATA', 'POI_INDEX', 'POI_INDEX_COMP', 'WEATHER_CLIMATE')
+tables = ('DEMOGRAPHICS', 'HOUSING', 'PARKS_ADDRESS_API_DATA', 'PARKS_API_DATA', 'POI_INDEX_COMP', 'WEATHER_CLIMATE')
 
 cur.execute('USE ROLE COL_ADMIN;')
 cur.execute('USE DATABASE COLORADO;')
