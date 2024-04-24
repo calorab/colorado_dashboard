@@ -1,4 +1,5 @@
-import pandas
+import pandas as pd
+import os
 import dash
 from dash import Dash, html, dcc, Input, Output, callback
 import plotly.express as px 
@@ -8,12 +9,36 @@ from dash_bootstrap_templates import load_figure_template
 
 dash.register_page(__name__)
 
-
+#  function to get the county specific data for facts and figures
 def get_poi_data(county):
 
-    with open('../data') as f:
-        pass
+    with open('data/poi_index_comp', mode='r') as f:
+        df = pd.read_csv(f)
 
+    condition = df['location_id'] == county
+    filtered_df = df[condition]
+
+    return filtered_df
+
+def sushi_chart():
+    
+    with open('data/poi_index_comp', mode='r') as f:
+        df = pd.read_csv(f)
+    
+    locations = df['location_id']
+    sushi = df['sushi_index']
+
+    return locations, sushi
+
+def pet_chart():
+    with open('data/poi_index_comp', mode='r') as f:
+        df = pd.read_csv(f)
+    
+    pet_comm = df['pet_commercial_index']
+    pet_vet = df['pet_vet_index']
+    locations = df['location_id']
+
+    return locations, pet_comm, pet_vet
 
 layout = html.Div([
     html.H1('Points of Interest'),
