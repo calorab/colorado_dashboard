@@ -1,10 +1,11 @@
 import os
-import snowflake.connector 
-import requests
-import json
+import snowflake.connector
 import pandas as pd
 
-'''Create a script to get data from SF and write that data to files so that I don't have to connect to SF for every page or every dashboard visit'''
+'''Todo:
+    1: rebuild county views using UNION so that I get one table for all counties
+    2: rebuild Views Task in Snowflake
+'''
 
 # Set up connection to Snowflake
 conn = snowflake.connector.connect(
@@ -15,33 +16,54 @@ conn = snowflake.connector.connect(
 
 # Create a the snowflake cursor object
 cur = conn.cursor()
-
+# 
 tables = ('DEMOGRAPHICS', 'HOUSING', 'PARKS_ADDRESS_API_DATA', 'PARKS_API_DATA', 'POI_INDEX', 'POI_INDEX_COMP', 'WEATHER_CLIMATE')
-views = ('ADAMS_COUNTY', 'ARAPAHOE_COUNTY', 'BOULDER_COUNTY', 'DENVER_COUNTY', 'DOUGLAS_COUNTY', 'ELPASO_COUNTY', 'JEFFERSON_COUNTY', 'LARIMER_COUNTY', 'ZIP_COUNTY')
 
 cur.execute('USE ROLE COL_ADMIN;')
 cur.execute('USE DATABASE COLORADO;')
 cur.execute('USE SCHEMA ANALYTICS;')
 cur.execute('USE WAREHOUSE COL_WH;')
 
+
+print(f'Before response from COUNTIES')
+# execute statement
+df = cur.execute('SELECT * FROM COLORADO.ANALYTICS.COUNTIES;').fetch_pandas_all()
+print('Got the response')
+
+# open dataFrame and write to a file data/<filename> probably just the table name
+if not os.path.exists('data'):
+    os.mkdir('data')
+    print('Data directory created')
+
+with open(os.path.join('data', 'counties'), 'w') as f:
+    # write flat file data to this file
+    df.to_csv(f, header=True, index=False)
+
+    
 for table in tables:
-    # define select all statement
-    query = f'SELECT * FROM {table};'
+    # define select all statement and other vars
+    file_name = table.lower()
+    db_table = 'COLORADO.ANALYTICS.' + table
+    query = f'SELECT * FROM {db_table};'
+    location = os.path.join('data', file_name)
+    print(f'Before response from {table}')
     # execute statement
-    response = cur.execute(query)
-    # open dataFrame and write to a file data/<filename> probably just the table name 
-    df = pd.DataFrame(response)
-    pass
+    df = cur.execute(query).fetch_pandas_all()
+    # open dataFrame and write to a file data/<filename> probably just the table name
+    print('Got the response')
 
-for view in views:
-    # define select all statement
+    if not os.path.exists('data'):
+        os.mkdir('data')
+        print('Data directory created')
 
-    # execute statement
+    
+    with open(location, 'w') as f:
+        # write flat file data to this file
+        df.to_csv(f, header=True, index=False)
 
-    # open dataFrame and write to a file data/<filename> probably just the table name 
-    pass
 
 
+cur.close()
 
 
 

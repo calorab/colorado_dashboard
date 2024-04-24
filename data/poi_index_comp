@@ -1,0 +1,10 @@
+location_id,pet_commercial_index,pet_vet_index,pet_dogpark_index,local_park_index,neighborhood_index,mountain_forest_index,sushi_index
+ADAMS,15,15,15,100,28,21,3
+ARAPAHOE,23,30,25,100,30,100,19
+BOULDER,14,23,19,100,30,100,12
+DENVER,25,27,33,100,100,100,19
+DOUGLAS,15,20,22,100,9,100,6
+ELPASO,30,30,17,100,7,100,10
+FORSYTH,5,8,3,58,17,100,1
+JEFFERSON,13,21,15,100,26,100,4
+LARIMER,19,31,14,100,100,100,6

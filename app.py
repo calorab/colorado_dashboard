@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.LUX], use_pages=True)
-
+# logging.basicConfig(filename='api_calls.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(message)s')
 server = app.server
 load_figure_template("LUX")
 
