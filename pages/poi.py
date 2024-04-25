@@ -25,45 +25,41 @@ def sushi_chart():
     with open('data/poi_index_comp', mode='r') as f:
         df = pd.read_csv(f)
     
-    locations = df['location_id']
-    sushi = df['sushi_index']
+    columns = ['location_id', 'sushi_index']
+    sushi_df = df[columns]
 
-    return locations, sushi
+    return sushi_df
 
 def pet_chart():
     with open('data/poi_index_comp', mode='r') as f:
         df = pd.read_csv(f)
     
-    pet_comm = df['pet_commercial_index']
-    pet_vet = df['pet_vet_index']
-    locations = df['location_id']
+    columns = ['location_id', 'pet_vet_index', 'pet_commercial_index']
+    pet_df = df[columns]
 
-    return locations, pet_comm, pet_vet
+    return pet_df
+
+poi_table = get_poi_data()
+
 
 layout = html.Div([
     html.H1('Points of Interest'),
     html.Div([
-        dcc.Graph(), # chart here for Pet commercial and vets bat chart
+        dcc.Graph(id='pet-graph', figure=px.bar(pet_chart(), y='# of Locations (2020)')), # chart here for Pet commercial and vets bat chart
         html.div([
             dcc.Dropdown(), # dropdown for table below
 
-            html.Table([
-                html.Thead(
-                    html.Tr([html.Td(cons_df.columns[0]), html.Td(cons_df.columns[1])])
-                ),
-                html.Tbody([
-                    html.Tr([html.Th(cons_df.iloc[0, 0]), html.Td(cons_df.iloc[0, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[1, 0]), html.Td(cons_df.iloc[1, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[2, 0]), html.Td(cons_df.iloc[2, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[3, 0]), html.Td(cons_df.iloc[3, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[4, 0]), html.Td(cons_df.iloc[4, 1])])
-                ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
+            html.Div([
+                html.Div(
+                    html.H5(f"{column.replace('_', ' ').capitalize()}: {value}")
+                ) for column in poi_table.columns for value in poi_table[column]
             ])
         ], style={'display': 'flex', 'flex-direction': 'column'})
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
+
     html.Div([
-        dcc.Graph(), # Mountains and Forests index graph
-        dcc.Graph() # Sushi index graph
+        dcc.Graph(id='mountain-forest-graph', figure=px.bar(get_poi_data()['mountain_forest_index'])), # Mountains and Forests index graph
+        dcc.Graph(id='sushi-graph', figure=px.bar(sushi_chart(), y='# of Locations (2020)')) # Sushi index graph
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1})
 
 ], style={'display': 'flex', 'flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
