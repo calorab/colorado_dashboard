@@ -13,13 +13,10 @@ def weather_chart():
     with open('data/weather_climate') as f:
         df = pd.read_csv(f)
     
-    locations = df['ID']
-    weather = df['WEATHER_INDEX']
-    hail = df['HAIL_INDEX']
-    tornado = df['TORNADO_INDEX']
-    wind = df['WIND_INDEX']
+    columns = ['ID', 'WEATHER_INDEX', 'HAIL_INDEX', 'TORNADO_INDEX', 'WIND_INDEX']
+    weather = df[columns]
 
-    return locations, weather, hail, tornado, wind
+    return weather
 
 def days_chart():
     with open('data/weather_climate') as f:
@@ -50,17 +47,16 @@ def pollution_chart():
     with open('data/weather_climate') as f:
         df = pd.read_csv(f)
 
-    poll = df['IR_POLLUTION_INDEX']
-    part = df['PARTICULATE_MATTER_INDEX']
+    poll_df = df['ID','AIR_POLLUTION_INDEX', 'PARTICULATE_MATTER_INDEX']
 
-    return poll, part
+    return poll_df
 
 layout = html.Div([
     html.H1('Weather & Climate'),
     html.Div([
-        dcc.Graph(), # main weather graph (hail/tornado/etc)
+        dcc.Graph(id='weather-graph', figure=px.bar(weather_chart(), y='Weather Index (2020)')), # main weather graph (hail/tornado/etc)
 
-         dcc.Graph() # pollution and particulates
+         dcc.Graph(id='pollute-graph', figure=px.bar(pollution_chart(), y='Pollution Index (2020)')) # pollution and particulates
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
     
     html.Div([ # second row
