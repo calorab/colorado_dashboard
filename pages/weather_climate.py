@@ -25,24 +25,25 @@ def days_chart():
     with open('data/weather_climate') as f:
         df = pd.read_csv(f)
     
-    locations = df['ID']
-    clear = df['AVERAGE_NUMBER_CLEAR_DAYS']
-    rain = df['AVERAGE_NUMBER_RAINY_DAYS']
-    snow = df['AVERAGE_NUMBER_SNOW_DAYS']
+    columns = ['AVERAGE_NUMBER_CLEAR_DAYS', 'AVERAGE_NUMBER_RAINY_DAYS', 'AVERAGE_NUMBER_SNOW_DAYS']
 
-    return locations, clear, rain, snow
+    days_df = df[columns]
+    return days_df
 
 def tables_chart():
 
     with open('data/weather_climate') as f:
         df = pd.read_csv(f)
     
-    avg_low = df['ANNUAL_AVERAGE_LOW_TEMP']
-    avg_high = ['ANNUAL_AVERAGE_HIGH_TEMP']
-    avg_precip = df['ANNUAL_AVERAGE_PRECIPITATION_INCHES']
-    avg_snow = df['ANNUAL_AVERAGE_SNOWFALL_INCHES']
+    
+    low_df = df['COUNTY_NAME', 'ANNUAL_AVERAGE_LOW_TEMP']
+    high_df = df['COUNTY_NAME', 'ANNUAL_AVERAGE_HIGH_TEMP']
+    precip_df = df['COUNTY_NAME', 'ANNUAL_AVERAGE_PRECIPITATION_INCHES']
+    snow_df = df['COUNTY_NAME', 'ANNUAL_AVERAGE_SNOWFALL_INCHES']
 
-    return avg_low, avg_high, avg_precip, avg_snow
+    return low_df, high_df, precip_df, snow_df
+
+low_temp, high_temp, precip, snow = tables_chart()
 
 def pollution_chart():
 
@@ -68,46 +69,34 @@ layout = html.Div([
             html.Table([
                 html.Caption('Annual Avg Low (F)'),
                 html.Tbody([
-                    html.Tr([html.Th(cons_df.iloc[0, 0]), html.Td(cons_df.iloc[0, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[1, 0]), html.Td(cons_df.iloc[1, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[2, 0]), html.Td(cons_df.iloc[2, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[3, 0]), html.Td(cons_df.iloc[3, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[4, 0]), html.Td(cons_df.iloc[4, 1])])
+                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_LOW_TEMP'])]) for row in low_temp.iterrows()
+                    
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ]),
             html.Table([
                 html.Caption('Annual Avg High (F)'),
                 html.Tbody([
-                    html.Tr([html.Th(cons_df.iloc[0, 0]), html.Td(cons_df.iloc[0, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[1, 0]), html.Td(cons_df.iloc[1, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[2, 0]), html.Td(cons_df.iloc[2, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[3, 0]), html.Td(cons_df.iloc[3, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[4, 0]), html.Td(cons_df.iloc[4, 1])])
+                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_HIGH_TEMP'])]) for row in high_temp.iterrows()
+                    
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ]),
             html.Table([
                 html.Caption('Annual Avg Precipitation (in.)'),
                 html.Tbody([
-                    html.Tr([html.Th(cons_df.iloc[0, 0]), html.Td(cons_df.iloc[0, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[1, 0]), html.Td(cons_df.iloc[1, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[2, 0]), html.Td(cons_df.iloc[2, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[3, 0]), html.Td(cons_df.iloc[3, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[4, 0]), html.Td(cons_df.iloc[4, 1])])
+                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_PRECIPITATION_INCHES'])]) for row in precip.iterrows()
+                    
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ]),html.Table([
                 html.Caption('Annual Avg Snow (in.)'),
                 html.Tbody([
-                    html.Tr([html.Th(cons_df.iloc[0, 0]), html.Td(cons_df.iloc[0, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[1, 0]), html.Td(cons_df.iloc[1, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[2, 0]), html.Td(cons_df.iloc[2, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[3, 0]), html.Td(cons_df.iloc[3, 1])]),
-                    html.Tr([html.Th(cons_df.iloc[4, 0]), html.Td(cons_df.iloc[4, 1])])
+                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_PRECIPITATION_INCHES'])]) for row in snow.iterrows()
+                    
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ])
         ], style={}),
 
         html.Div([ # second row, right block
-            dcc.Graph() # stacked bar chart, virtical clear/rainy/snow days
+            dcc.Graph(id='days-graph', figure=px.bar(days_chart(), y='# of days in a year (2020)')) 
         ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1})
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
     
