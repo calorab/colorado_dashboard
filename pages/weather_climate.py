@@ -22,7 +22,7 @@ def days_chart():
     with open('data/weather_climate') as f:
         df = pd.read_csv(f)
     
-    columns = ['AVERAGE_NUMBER_CLEAR_DAYS', 'AVERAGE_NUMBER_RAINY_DAYS', 'AVERAGE_NUMBER_SNOW_DAYS']
+    columns = ['ID', 'AVERAGE_NUMBER_CLEAR_DAYS', 'AVERAGE_NUMBER_RAINY_DAYS', 'AVERAGE_NUMBER_SNOW_DAYS']
 
     days_df = df[columns]
     return days_df
@@ -54,9 +54,9 @@ def pollution_chart():
 layout = html.Div([
     html.H1('Weather & Climate'),
     html.Div([
-        dcc.Graph(id='weather-graph', figure=px.bar(weather_chart())), # main weather graph (hail/tornado/etc)
+        dcc.Graph(id='weather-graph', figure=px.bar(weather_chart(), x='ID')), # main weather graph (hail/tornado/etc)
 
-        dcc.Graph(id='pollute-graph', figure=px.bar(pollution_chart())) # pollution and particulates
+        dcc.Graph(id='pollute-graph', figure=px.bar(pollution_chart(), x='ID')) # pollution and particulates
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
     
     html.Div([ # second row
@@ -65,34 +65,34 @@ layout = html.Div([
             html.Table([
                 html.Caption('Annual Avg Low (F)'),
                 html.Tbody([
-                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_LOW_TEMP'])]) for row in low_temp.iterrows()
+                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in low_temp.iterrows()
                     
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ]),
             html.Table([
                 html.Caption('Annual Avg High (F)'),
                 html.Tbody([
-                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_HIGH_TEMP'])]) for row in high_temp.iterrows()
+                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in high_temp.iterrows()
                     
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ]),
             html.Table([
                 html.Caption('Annual Avg Precipitation (in.)'),
                 html.Tbody([
-                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_PRECIPITATION_INCHES'])]) for row in precip.iterrows()
+                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in precip.iterrows()
                     
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ]),html.Table([
                 html.Caption('Annual Avg Snow (in.)'),
                 html.Tbody([
-                    html.Tr([html.Th(row['COUNTY_NAME']), html.Td(row['ANNUAL_AVERAGE_PRECIPITATION_INCHES'])]) for row in snow.iterrows()
+                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in snow.iterrows()
                     
                 ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
             ])
         ], style={}),
 
         html.Div([ # second row, right block
-            dcc.Graph(id='days-graph', figure=px.bar(days_chart())) 
+            dcc.Graph(id='days-graph', figure=px.bar(days_chart(), x='ID')) 
         ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1})
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
     

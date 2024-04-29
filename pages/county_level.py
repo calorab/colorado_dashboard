@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 
 
-dash.register_page(__name__, path='county')
+dash.register_page(__name__, path='/county')
 
 
 @callback(
@@ -26,13 +26,13 @@ def generate_table(sector):
 
     table_data = sector_dict[sector]
     
-    return table_data
+    return table_data.to_dict('records')
     
 
 
 layout = html.Div([
     html.H1('County Level Details'),
-    dcc.Dropdown(['Weather & Climate', 'Population', 'Households'], 'populations', id='sector-dropdown', style={'margin-top': 10}), 
+    dcc.Dropdown(['Weather & Climate', 'Population', 'Households'], 'Population', id='sector-dropdown', style={'margin-top': 10}), 
     dash_table.DataTable(id='main-table') # possibly go back to using a function here??
 ], style={'display': 'flex', 'flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
 
