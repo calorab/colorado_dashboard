@@ -33,10 +33,10 @@ def tables_chart():
         df = pd.read_csv(f)
     
     
-    low_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_LOW_TEMP']]
-    high_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_HIGH_TEMP']]
-    precip_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_PRECIPITATION_INCHES']]
-    snow_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_SNOWFALL_INCHES']]
+    low_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_LOW_TEMP']].reset_index(drop=True)
+    high_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_HIGH_TEMP']].reset_index(drop=True)
+    precip_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_PRECIPITATION_INCHES']].reset_index(drop=True)
+    snow_df = df[['COUNTY_NAME', 'ANNUAL_AVERAGE_SNOWFALL_INCHES']].reset_index(drop=True)
 
     return low_df, high_df, precip_df, snow_df
 
@@ -58,38 +58,44 @@ layout = html.Div([
 
         dcc.Graph(id='pollute-graph', figure=px.bar(pollution_chart(), x='ID')) # pollution and particulates
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
-    
+    html.Label('Temperature Ranking:'),
     html.Div([ # second row
+        
         html.Div([ # left block of tables
-            html.Label('Temperature Ranking:'),
-            html.Table([
-                html.Caption('Annual Avg Low (F)'),
-                html.Tbody([
-                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in low_temp.iterrows()
-                    
-                ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
-            ]),
-            html.Table([
-                html.Caption('Annual Avg High (F)'),
-                html.Tbody([
-                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in high_temp.iterrows()
-                    
-                ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
-            ]),
-            html.Table([
-                html.Caption('Annual Avg Precipitation (in.)'),
-                html.Tbody([
-                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in precip.iterrows()
-                    
-                ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
-            ]),html.Table([
-                html.Caption('Annual Avg Snow (in.)'),
-                html.Tbody([
-                    html.Tr([html.Th(row[0]), html.Td(row[1])]) for row in snow.iterrows()
-                    
-                ], style={'padding': 10, 'flex': 1, 'textAlign': 'left'})
-            ])
-        ], style={}),
+            
+            html.Div([
+                html.Table([
+                    html.Caption('Annual Avg Low (F)'),
+                    html.Tbody([
+                        html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_LOW_TEMP'],style={'textAlign': 'right'})]) for _,row in low_temp.iterrows()    
+                    ])
+                ], style={'margin': 20}),
+
+                html.Table([
+                    html.Caption('Annual Avg High (F)'),
+                    html.Tbody([
+                        html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_HIGH_TEMP'],style={'textAlign': 'right'})]) for _,row in high_temp.iterrows()                    
+                    ])
+                ], style={'margin': 20})
+            ], style={'display': 'flex', 'flexDirection': 'row', 'padding': 30}),
+
+            html.Div([
+                html.Table([
+                    html.Caption('Annual Avg Precipitation (in.)'),
+                    html.Tbody([
+                        html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_PRECIPITATION_INCHES'],style={'textAlign': 'right'})]) for _,row in precip.iterrows()
+                        
+                    ])
+                ], style={'margin': 20}),
+
+                html.Table([
+                    html.Caption('Annual Avg Snow (in.)'),
+                    html.Tbody([
+                        html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_SNOWFALL_INCHES'],style={'textAlign': 'right'})]) for _,row in snow.iterrows()    
+                    ])
+                ], style={'margin': 20})
+            ], style={'display': 'flex', 'flexDirection': 'row', 'padding': 30})     
+        ], style={'display': 'flex', 'flexDirection': 'column'}),
 
         html.Div([ # second row, right block
             dcc.Graph(id='days-graph', figure=px.bar(days_chart(), x='ID')) 
@@ -98,7 +104,7 @@ layout = html.Div([
     
     
 
-], style={'display': 'flex', 'flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
+], style={'display': 'flex', 'boxSizing': 'border-box','flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
 
 
 
