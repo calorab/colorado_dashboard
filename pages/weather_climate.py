@@ -69,14 +69,14 @@ layout = html.Div([
                     html.Tbody([
                         html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_LOW_TEMP'],style={'textAlign': 'right'})]) for _,row in low_temp.iterrows()    
                     ])
-                ], style={'margin': 20}),
+                ], style={'margin': 40}),
 
                 html.Table([
                     html.Caption('Annual Avg High (F)'),
                     html.Tbody([
                         html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_HIGH_TEMP'],style={'textAlign': 'right'})]) for _,row in high_temp.iterrows()                    
                     ])
-                ], style={'margin': 20})
+                ], style={'margin': 40})
             ], style={'display': 'flex', 'flexDirection': 'row', 'padding': 30}),
 
             html.Div([
@@ -86,25 +86,25 @@ layout = html.Div([
                         html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_PRECIPITATION_INCHES'],style={'textAlign': 'right'})]) for _,row in precip.iterrows()
                         
                     ])
-                ], style={'margin': 20}),
+                ], style={'margin': 40}),
 
                 html.Table([
                     html.Caption('Annual Avg Snow (in.)'),
                     html.Tbody([
                         html.Tr([html.Th(row['COUNTY_NAME'],style={'textAlign': 'left'}), html.Td(row['ANNUAL_AVERAGE_SNOWFALL_INCHES'],style={'textAlign': 'right'})]) for _,row in snow.iterrows()    
                     ])
-                ], style={'margin': 20})
+                ], style={'margin': 40})
             ], style={'display': 'flex', 'flexDirection': 'row', 'padding': 30})     
         ], style={'display': 'flex', 'flexDirection': 'column'}),
 
         html.Div([ # second row, right block
             dcc.Graph(id='days-graph', figure=px.bar(days_chart(), x='ID')) 
-        ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1})
-    ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
+        ], style={'display': 'flex', 'flex-direction': 'row','padding': 10, 'flex': 1})
+    ], style={'display': 'flex', 'flex-direction': 'row','justifyContent': 'space-between', 'padding': 10, 'flex': 1}),
     
     
 
-], style={'display': 'flex', 'boxSizing': 'border-box','flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
+], style={'display': 'flex', 'boxSizing': 'border-box','flex-direction': 'column', 'alignItems': 'center', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
 
 
 

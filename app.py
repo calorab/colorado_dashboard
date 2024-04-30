@@ -18,7 +18,7 @@ app.layout = html.Div([html.H1('Multi-page app with Dash Pages'),
     ]), 
     
     dash.page_container
-])
+], style={'display': 'flex', 'boxSizing': 'border-box', 'flexDirection': 'column'})
 
 
 if __name__ == '__main__':

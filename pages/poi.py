@@ -58,17 +58,17 @@ def mountain_chart():
 layout = html.Div([
     html.H1('Points of Interest'),
     html.Div([
-        dcc.Dropdown(['Adams', 'Arapahoe', 'Boulder', 'Denver', 'Douglas', 'ElPaso', 'Jefferson', 'Larimer'], 'Denver', id='county-dropdown'), # dropdown for table below
+        dcc.Dropdown(['Adams', 'Arapahoe', 'Boulder', 'Denver', 'Douglas', 'ElPaso', 'Jefferson', 'Larimer'], 'Denver', id='county-dropdown', clearable=False, style={'width': '100%', 'margin': 25}), # dropdown for table below
         dash_table.DataTable(id='county-table')
-    ], style={'display': 'flex', 'flex-direction': 'row'}),
+    ], style={'display': 'flex', 'flex-direction': 'column', 'alignItems': 'center'}),
     
     html.Div([
         dcc.Graph(id='mountain-forest-graph', figure=px.bar(mountain_chart(), x='location_id')), # Mountains and Forests index graph
         dcc.Graph(id='sushi-graph', figure=px.bar(sushi_chart(), x='location_id')), # Sushi index graph
-         dcc.Graph(id='pet-graph', figure=px.bar(pet_chart(), x='location_id')), # chart here for Pet commercial and vets bat chart
-    ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1})
+        dcc.Graph(id='pet-graph', figure=px.bar(pet_chart(), x='location_id')), # chart here for Pet commercial and vets bat chart
+    ], style={'display': 'flex', 'flex-direction': 'row', 'justifyContent': 'center','flexWrap': 'wrap','padding': 10, 'flex': 1})
 
-], style={'display': 'flex', 'flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
+], style={'display': 'flex', 'boxSizing': 'border-box', 'flex-direction': 'column', 'alignItems': 'center','padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
 
 
 # html.Div([ 
