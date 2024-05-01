@@ -1,17 +1,22 @@
 import pandas as pd
 import os
-
-data = {'zip_code': [30028, 30318, 30328],
-        'city': ['Cumming', 'Atlanta', 'Sandy Springs']}
-df = pd.DataFrame(data)
+import plotly.express as px
 
 
+def graph_data():
+    with open('data/demographics') as f:
+        df = pd.read_csv(f)
+    cpi_df = df[['LOCATION_ID','CONSUMER_PRICE_INDEX']]
+    print(cpi_df)
+    return cpi_df
+
+graph_data()
 # Iterate over columns
-for column in df.columns:
-    # Iterate over values in the column
-    for value in df[column]:
-        # Concatenate column name with value
-        print(f"{column.replace('_', ' ').capitalize()}: {value}")
+# for column in df.columns:
+#     # Iterate over values in the column
+#     for value in df[column]:
+#         # Concatenate column name with value
+#         print(f"{column.replace('_', ' ').capitalize()}: {value}")
 
 # def get_poi_data(county):
 #     # define vars like condition

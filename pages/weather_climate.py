@@ -21,10 +21,9 @@ def weather_chart():
 def days_chart():
     with open('data/weather_climate') as f:
         df = pd.read_csv(f)
-    
-    columns = ['ID', 'AVERAGE_NUMBER_CLEAR_DAYS', 'AVERAGE_NUMBER_RAINY_DAYS', 'AVERAGE_NUMBER_SNOW_DAYS']
+   
 
-    days_df = df[columns]
+    days_df = df[['ID', 'AVERAGE_NUMBER_CLEAR_DAYS', 'AVERAGE_NUMBER_RAINY_DAYS', 'AVERAGE_NUMBER_SNOW_DAYS']]
     return days_df
 
 def tables_chart():
@@ -40,8 +39,6 @@ def tables_chart():
 
     return low_df, high_df, precip_df, snow_df
 
-low_temp, high_temp, precip, snow = tables_chart()
-
 def pollution_chart():
 
     with open('data/weather_climate') as f:
@@ -51,12 +48,20 @@ def pollution_chart():
 
     return poll_df
 
+
+low_temp, high_temp, precip, snow = tables_chart()
+days = days_chart()
+pollution = pollution_chart()
+weather = weather_chart()
+
+
+
 layout = html.Div([
     html.H1('Weather & Climate'),
     html.Div([
-        dcc.Graph(id='weather-graph', figure=px.bar(weather_chart(), x='ID')), # main weather graph (hail/tornado/etc)
+        dcc.Graph(id='weather-graph', figure=px.bar(weather, x='ID', y=['WEATHER_INDEX', 'HAIL_INDEX', 'TORNADO_INDEX', 'WIND_INDEX'])), # main weather graph (hail/tornado/etc)
 
-        dcc.Graph(id='pollute-graph', figure=px.bar(pollution_chart(), x='ID')) # pollution and particulates
+        dcc.Graph(id='pollute-graph', figure=px.bar(pollution, x='ID', y=['AIR_POLLUTION_INDEX', 'PARTICULATE_MATTER_INDEX'])) # pollution and particulates
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
     html.Label('Temperature Ranking:'),
     html.Div([ # second row
@@ -98,7 +103,7 @@ layout = html.Div([
         ], style={'display': 'flex', 'flexDirection': 'column'}),
 
         html.Div([ # second row, right block
-            dcc.Graph(id='days-graph', figure=px.bar(days_chart(), x='ID')) 
+            dcc.Graph(id='days-graph', figure=px.bar(days, x='ID', y=['AVERAGE_NUMBER_CLEAR_DAYS', 'AVERAGE_NUMBER_RAINY_DAYS', 'AVERAGE_NUMBER_SNOW_DAYS'])) 
         ], style={'display': 'flex', 'flex-direction': 'row','padding': 10, 'flex': 1})
     ], style={'display': 'flex', 'flex-direction': 'row','justifyContent': 'space-between', 'padding': 10, 'flex': 1}),
     

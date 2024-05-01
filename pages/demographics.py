@@ -25,16 +25,16 @@ pop, popdist, house, crime, cpi, household = graph_data()
 layout = html.Div([
     html.H1('Key Demographics'),
     html.Div([
-        dcc.Graph(id='pop-graph', figure=px.bar(pop, x='LOCATION_ID')),
-        dcc.Graph(id='hh-graph', figure=px.bar(household, x='LOCATION_ID'))
+        dcc.Graph(id='pop-graph', figure=px.bar(pop, x='LOCATION_ID',y=['POPULATION_2020', 'POPULATION_5YR_PROJ'])),
+        dcc.Graph(id='hh-graph', figure=px.bar(household, x='LOCATION_ID', y='HH_MEDIAN_INCOME'))
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex-wrap': 'wrap', 'justify-content': 'center'}),
     html.Div([
-        dcc.Graph(id='popdist-graph', figure=px.bar(popdist, x='LOCATION_ID')),
-        dcc.Graph(id='house-graph', figure=px.bar(house, x='LOCATION_ID'))
+        dcc.Graph(id='popdist-graph', figure=px.bar(popdist, x='LOCATION_ID', y=['POPULATION_URBAN', 'POPULATION_RURAL'])),
+        dcc.Graph(id='house-graph', figure=px.bar(house, x='LOCATION_ID', y='CPI_HOUSING'))
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex-wrap': 'wrap', 'justify-content': 'center'}),
     html.Div([
-        dcc.Graph(id='crime-graph', figure=px.bar(crime, x='LOCATION_ID')),
-        dcc.Graph(id='cpi-graph', figure=px.bar(cpi, x='LOCATION_ID'))
+        dcc.Graph(id='crime-graph', figure=px.bar(crime, x='LOCATION_ID', y='CRIME_INDEX')),
+        # dcc.Graph(id='cpi-graph', figure=px.bar(cpi, x='LOCATION_ID', y='CONSUMER_PRICE_INDEX'))
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex-wrap': 'wrap', 'justify-content': 'center'})
 
 ], style={'display': 'flex', 'flex-direction': 'column', 'align-items': 'center', 'padding': 20, 'margin': 'auto', 'max-width': '1200px', 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})

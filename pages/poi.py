@@ -37,6 +37,11 @@ def mountain_chart():
     mountain_df = df[['location_id', 'mountain_forest_index']]
     return mountain_df
 
+sushi = sushi_chart()
+pet = pet_chart()
+mountain = mountain_chart()
+
+
 layout = html.Div([
     html.H1('Points of Interest'),
     html.Div([
@@ -56,9 +61,9 @@ layout = html.Div([
     ], style={'width': '100%', 'maxWidth': '1000px', 'margin': '0 auto'}),  # Container width control and centering
     
     html.Div([
-        dcc.Graph(id='mountain-forest-graph', figure=px.bar(mountain_chart(), x='location_id')),
-        dcc.Graph(id='sushi-graph', figure=px.bar(sushi_chart(), x='location_id')),
-        dcc.Graph(id='pet-graph', figure=px.bar(pet_chart(), x='location_id')),
+        dcc.Graph(id='mountain-forest-graph', figure=px.bar(mountain, x='location_id', y='mountain_forest_index')),
+        dcc.Graph(id='sushi-graph', figure=px.bar(sushi, x='location_id', y='sushi_index')),
+        dcc.Graph(id='pet-graph', figure=px.bar(pet, x='location_id', y=['pet_vet_index', 'pet_commercial_index'])),
     ], style={'display': 'flex', 'flex-direction': 'row', 'justifyContent': 'center','flexWrap': 'wrap','padding': 10, 'flex': 1})
 
 ], style={'display': 'flex', 'boxSizing': 'border-box', 'flex-direction': 'column', 'alignItems': 'center','padding': 20, 'margin': 'auto', 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
