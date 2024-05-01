@@ -1,7 +1,5 @@
-import pandas as pd
 import dash
-from dash import Dash, html, dcc, Input, Output, callback
-import plotly.express as px 
+from dash import Dash, html
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 
@@ -24,9 +22,9 @@ navbar = dbc.Nav(
     style=navbar_style
 )
 
-# Layout wrapper for Pages
+# Layout wrapper for Dashboard
 app.layout = html.Div([
-    html.H1('Multi-page app with Dash Pages', style={'textAlign': 'center'}),
+    html.H5('A data pipeline and multi-page dashboard, built with Plotly/Dash, Python, SQL, Snowflake Connector & Snowpark', style={'textAlign': 'center'}),
     navbar,
     dash.page_container
 ], style={'display': 'flex', 'boxSizing': 'border-box', 'flexDirection': 'column'})
