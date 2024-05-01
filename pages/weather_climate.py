@@ -42,7 +42,8 @@ def style_graph(figure, top_margin=80):
         font=dict(family="Lato, sans-serif", size=12, color='black'),
         xaxis=dict(showline=True, linewidth=2, linecolor='black', mirror=True),
         yaxis=dict(showline=True, linewidth=2, linecolor='black', mirror=True),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        barmode='group'
     )
     figure.update_traces(marker_line_width=1, marker_line_color='navy')
     return figure
@@ -59,8 +60,8 @@ layout = html.Div([
         dcc.Graph(id='pollute-graph', figure=style_graph(px.bar(pollution, x='ID', y=['AIR_POLLUTION_INDEX', 'PARTICULATE_MATTER_INDEX'], title='Pollution Indices')))
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex': 1}),
     html.Label('Temperature Ranking:', style={'fontSize': 20, 'margin': '20px 0'}),
-    html.Div([ # second row
-        html.Div([ # left block of tables
+    html.Div([ 
+        html.Div([ 
             html.Div([
                 html.Table([
                     html.Caption('Annual Avg Low (F)', style={'fontSize': 18}),

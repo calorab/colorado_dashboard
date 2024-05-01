@@ -27,7 +27,7 @@ def style_graph(figure):
     figure.update_layout(
         paper_bgcolor='rgba(255,255,255,0.95)',
         plot_bgcolor='rgba(255,255,255,1)',
-        margin=dict(l=40, r=40, t=40, b=40),
+        margin=dict(l=40, r=40, t=60, b=40),
         title_font=dict(size=20, color='darkblue'),
         font=dict(family="Lato, sans-serif", size=12, color='black'),
         xaxis=dict(showline=True, linewidth=2, linecolor='black', mirror=True),
@@ -37,7 +37,7 @@ def style_graph(figure):
     figure.update_traces(marker_line_width=1, marker_line_color='navy')
     return figure
 
-# Apply styles to each graph
+
 layout = html.Div([
     html.H1('Key Demographics'),
     html.Div([
@@ -50,8 +50,6 @@ layout = html.Div([
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex-wrap': 'wrap', 'justify-content': 'center'}),
     html.Div([
         dcc.Graph(id='crime-graph', figure=style_graph(px.bar(crime, x='LOCATION_ID', y='CRIME_INDEX', title='Crime Index'))),
-        # Uncomment the next line if you want to include the CPI graph
-        # dcc.Graph(id='cpi-graph', figure=style_graph(px.bar(cpi, x='LOCATION_ID', y='CONSUMER_PRICE_INDEX', title='Consumer Price Index')))
     ], style={'display': 'flex', 'flex-direction': 'row', 'padding': 10, 'flex-wrap': 'wrap', 'justify-content': 'center'})
 
 ], style={'display': 'flex', 'flex-direction': 'column', 'align-items': 'center', 'padding': 20, 'margin': 'auto', 'max-width': '1200px', 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
