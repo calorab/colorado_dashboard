@@ -37,10 +37,24 @@ def mountain_chart():
     mountain_df = df[['location_id', 'mountain_forest_index']]
     return mountain_df
 
-sushi = sushi_chart()
-pet = pet_chart()
-mountain = mountain_chart()
+# Apply consistent styling to the graphs
+def style_graph(figure):
+    figure.update_layout(
+        paper_bgcolor='rgba(255,255,255,0.95)',
+        plot_bgcolor='rgba(255,255,255,1)',
+        margin=dict(l=40, r=40, t=40, b=40),
+        title_font=dict(size=20, color='darkblue'),
+        font=dict(family="Lato, sans-serif", size=12, color='black'),
+        xaxis=dict(showline=True, linewidth=2, linecolor='black', mirror=True),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black', mirror=True),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+    figure.update_traces(marker_line_width=1, marker_line_color='navy')
+    return figure
 
+sushi = style_graph(px.bar(sushi_chart(), x='location_id', y='sushi_index', title="Sushi Index"))
+pet = style_graph(px.bar(pet_chart(), x='location_id', y=['pet_vet_index', 'pet_commercial_index'], title="Pet Index"))
+mountain = style_graph(px.bar(mountain_chart(), x='location_id', y='mountain_forest_index', title="Mountain and Forest Index"))
 
 layout = html.Div([
     html.H1('Points of Interest'),
@@ -50,20 +64,20 @@ layout = html.Div([
             'Denver', 
             id='county-dropdown', 
             clearable=False, 
-            style={'width': '100%', 'maxWidth': '500px', 'margin': '0 auto'}  # Ensures the dropdown doesn't exceed 500px and centers it
+            style={'width': '100%', 'maxWidth': '500px', 'margin': '0 auto'}
         ),
         dash_table.DataTable(
             id='county-table',
-            style_table={'maxWidth': '1500px', 'overflowX': 'auto'},  # Setting max width for the table and enabling horizontal scroll
-            style_cell={'minWidth': '80px', 'width': '120px', 'maxWidth': '180px'},  # Control over cell width
-            style_data={'whiteSpace': 'normal', 'height': 'auto'},  # Allowing text to wrap within cells
+            style_table={'maxWidth': '1500px', 'overflowX': 'auto'},
+            style_cell={'minWidth': '80px', 'width': '120px', 'maxWidth': '180px'},
+            style_data={'whiteSpace': 'normal', 'height': 'auto'}
         )
-    ], style={'width': '100%', 'maxWidth': '1000px', 'margin': '0 auto'}),  # Container width control and centering
-    
+    ], style={'width': '100%', 'maxWidth': '1000px', 'margin': '0 auto'}),
+
     html.Div([
-        dcc.Graph(id='mountain-forest-graph', figure=px.bar(mountain, x='location_id', y='mountain_forest_index')),
-        dcc.Graph(id='sushi-graph', figure=px.bar(sushi, x='location_id', y='sushi_index')),
-        dcc.Graph(id='pet-graph', figure=px.bar(pet, x='location_id', y=['pet_vet_index', 'pet_commercial_index'])),
+        dcc.Graph(id='mountain-forest-graph', figure=mountain),
+        dcc.Graph(id='sushi-graph', figure=sushi),
+        dcc.Graph(id='pet-graph', figure=pet),
     ], style={'display': 'flex', 'flex-direction': 'row', 'justifyContent': 'center','flexWrap': 'wrap','padding': 10, 'flex': 1})
 
 ], style={'display': 'flex', 'boxSizing': 'border-box', 'flex-direction': 'column', 'alignItems': 'center','padding': 20, 'margin': 'auto', 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
