@@ -5,16 +5,13 @@ import plotly.express as px
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 
-
 dash.register_page(__name__, path='/county')
-
 
 @callback(
        Output('main-table', 'data'), # sector data for table
        Input('sector-dropdown', 'value') # dropdown for sector choice
        )
 def generate_table(sector):
-    
     with open('data/counties', mode='r') as f:
         df = pd.read_csv(f)
     
@@ -25,15 +22,24 @@ def generate_table(sector):
     sector_dict = {'Weather & Climate': df[wc_cols], 'Population': df[pop_cols], 'Households': df[hh_cols]}
 
     table_data = sector_dict[sector]
-    
     return table_data.to_dict('records')
-    
-
 
 layout = html.Div([
     html.H1('County Level Details'),
-    dcc.Dropdown(['Weather & Climate', 'Population', 'Households'], 'Population', id='sector-dropdown', style={'margin-top': 10}), 
-    dash_table.DataTable(id='main-table') # possibly go back to using a function here??
-], style={'display': 'flex', 'flex-direction': 'column', 'padding': 20, 'margin': 40, 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
+    dcc.Dropdown(
+        ['Weather & Climate', 'Population', 'Households'], 
+        'Population', 
+        id='sector-dropdown', 
+        style={'margin-top': 10, 'width': '100%', 'maxWidth': '500px', 'margin': '0 auto'}  # Center and constrain the width of the dropdown
+    ),
+    dash_table.DataTable(
+        id='main-table',
+        style_table={'maxWidth': '1000px', 'overflowX': 'auto'},  # Constrain the table width and allow horizontal scrolling
+        style_cell={'minWidth': '80px', 'width': '120px', 'maxWidth': '180px', 'textAlign': 'left'},  # Set cell width and text alignment
+        style_header={'fontWeight': 'bold'}  # Bold header text for clarity
+    )
+], style={'display': 'flex', 'flex-direction': 'column', 'alignItems': 'center', 'padding': 20, 'margin': 'auto', 'maxWidth': '1200px', 'border-style': 'solid', 'border-color': 'lightgrey', 'border-width': '1px', 'box-shadow': '2px 4px 4px rgba(0, 0, 0, 0.4)'})
 
-
+if __name__ == '__main__':
+    app = Dash(__name__, external_stylesheets=[dbc.themes.LUX], use_pages=True)
+    app.run(debug=True)
