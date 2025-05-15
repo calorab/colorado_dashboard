@@ -3,7 +3,13 @@ from dash import Dash, html
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.LUX], use_pages=True)
+app = Dash(
+    __name__, 
+    external_stylesheets=[dbc.themes.LUX], 
+    use_pages=True, 
+    requests_pathname_prefix='/colorado/',
+    routes_pathname_prefix='/colorado/'
+)
 server = app.server
 load_figure_template("LUX")
 
