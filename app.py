@@ -8,7 +8,8 @@ app = Dash(
     external_stylesheets=[dbc.themes.LUX], 
     use_pages=True, 
     requests_pathname_prefix='/colorado/',
-    routes_pathname_prefix='/colorado/'
+    routes_pathname_prefix='/colorado/',
+    serve_locally=False
 )
 server = app.server
 load_figure_template("LUX")
