@@ -9,7 +9,7 @@ app = Dash(
     use_pages=True, 
     requests_pathname_prefix='/colorado/',
     routes_pathname_prefix='/colorado/',
-    serve_locally=False
+    serve_locally=True
 )
 server = app.server
 load_figure_template("LUX")
