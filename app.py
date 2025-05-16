@@ -6,10 +6,7 @@ from dash_bootstrap_templates import load_figure_template
 app = Dash(
     __name__, 
     external_stylesheets=[dbc.themes.LUX], 
-    use_pages=True, 
-    requests_pathname_prefix='/colorado/',
-    routes_pathname_prefix='/colorado/',
-    serve_locally=True
+    use_pages=True
 )
 server = app.server
 load_figure_template("LUX")
